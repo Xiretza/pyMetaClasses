@@ -1,6 +1,9 @@
 Singleton
 #########
 
+This class implements the `singleton design pattern <https://en.wikipedia.org/wiki/Singleton_pattern>`_
+as a Python meta class.
+
 .. autoclass:: pyMetaClasses.Singleton
    :members:
    :private-members:
