@@ -1,4 +1,4 @@
-![PyPI - License](https://img.shields.io/pypi/l/pyMetaClasses)
+![PyPI - License](https://img.shields.io/pypi/l/pymetaclasses)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Paebbels/pyMetaClasses) 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Paebbels/pyMetaClasses)
 [![Documentation Status](https://readthedocs.org/projects/pymetaclasses/badge/?version=latest)](https://pyMetaClasses.readthedocs.io/en/latest/?badge=latest)
