@@ -47,6 +47,7 @@ extensions = [
 	'sphinx.ext.mathjax',
 	'sphinx.ext.ifconfig',
 	'sphinx.ext.viewcode',
+#	'sphinx.ext.duration',
 # SphinxContrib extensions
 
 # Other extensions
@@ -88,6 +89,13 @@ html_static_path = ['_static']
 intersphinx_mapping = {
 	'python':   ('https://docs.python.org/3', None),
 }
+
+
+# ==============================================================================
+# Sphinx.Ext.AutoDoc
+# ==============================================================================
+# see: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#configuration
+autodoc_member_order = "bysource"       # alphabetical, groupwise, bysource
 
 
 # ==============================================================================

@@ -44,8 +44,15 @@ __all__ = __api__
 
 class Singleton(type):
 	"""Implements a singleton pattern in form of a Python metaclass (a class constructing classes)."""
-	_instances = {}
+
+	_instanceCache = {}       #: Cache of all created singleton instances.
+
 	def __call__(cls, *args, **kwargs):
-		if cls not in cls._instances:
-			cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
-		return cls._instances[cls]
+		"""
+		Overwrites the ``__call__`` method of parent class :py:class:`type` to return
+		an object instance from an instances cache (see :attr:`_instanceCache`) if
+		the class was already constructed before.
+		"""
+		if cls not in cls._instanceCache:
+			cls._instanceCache[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+		return cls._instanceCache[cls]
