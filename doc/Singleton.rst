@@ -5,6 +5,7 @@ This class implements the `singleton design pattern <https://en.wikipedia.org/wi
 as a Python meta class.
 
 .. autoclass:: pyMetaClasses.Singleton
+   :show-inheritance:
    :members:
    :private-members:
    :special-members:
