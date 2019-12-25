@@ -34,6 +34,18 @@ List of meta classes
 * :py:class:`pyMetaClasses.Singleton`
 
 
+Contributors
+************
+
+* `Patrick Lehmann <https://github.com/Paebbels>`_ (Maintainer)
+
+
+License
+*******
+
+This library is licensed under **Apache License 2.0**.
+
+
 ------------------------------------
 
 .. |docdate| date:: %b %d, %Y - %H:%M
@@ -60,6 +72,7 @@ List of meta classes
    :caption: Appendix
    :hidden:
 
+   License
    genindex
 
 .. #

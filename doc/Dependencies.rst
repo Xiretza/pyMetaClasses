@@ -1,4 +1,4 @@
 Dependencies
 ############
 
-`This package has no dependencies.`
+*This package has no dependencies.*
