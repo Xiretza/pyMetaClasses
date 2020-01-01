@@ -56,3 +56,12 @@ class Singleton(type):
 		if cls not in cls._instanceCache:
 			cls._instanceCache[cls] = super(Singleton, cls).__call__(*args, **kwargs)
 		return cls._instanceCache[cls]
+
+	@classmethod
+	def Register(cls, t, instance):
+		"""Register a type,instance pair in :attr:`_instanceCache`."""
+
+		if t not in cls._instanceCache:
+			cls._instanceCache[t] = instance
+		else:
+			raise KeyError("Type '{type!s}' is already registered.".format(type=t))
