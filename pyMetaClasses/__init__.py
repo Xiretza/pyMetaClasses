@@ -19,7 +19,7 @@
 #
 # License:
 # ============================================================================
-# Copyright 2017-2019 Patrick Lehmann - Bötzingen, Germany
+# Copyright 2017-2020 Patrick Lehmann - Bötzingen, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,8 +38,12 @@
 #
 __api__ = [
 	'Singleton',
+	'Overloading'
 ]
 __all__ = __api__
+
+from inspect      import signature, Parameter
+from types        import MethodType
 
 
 class Singleton(type):
@@ -65,3 +69,79 @@ class Singleton(type):
 			cls._instanceCache[t] = instance
 		else:
 			raise KeyError("Type '{type!s}' is already registered.".format(type=t))
+
+
+# https://github.com/dabeaz/python-cookbook/blob/master/src/9/multiple_dispatch_with_function_annotations/example1.py?ts=2
+
+class Overloading(type):
+	"""Metaclass that allows multiple dispatch of methods based on method signatures."""
+
+	class DispatchDictionary(dict):
+		"""Special dictionary to build dispatchable methods in a metaclass."""
+
+		class DispatchableMethod:
+			"""Represents a single multimethod."""
+
+			def __init__(self, name):
+				self._methods = {}
+				self.__name__ = name
+
+			def register(self, method):
+				"""Register a new method as a dispatchable."""
+
+				# Build a signature from the method's type annotations
+				sig = signature(method)
+				types = []
+				for name, parameter in sig.parameters.items():
+					if name == "self":
+						continue
+
+					if parameter.annotation is Parameter.empty:
+						raise TypeError("Argument {} must be annotated with a type.".format(name))
+					if not isinstance(parameter.annotation, type):
+						raise TypeError("Argument {} annotation must be a type.".format(name))
+
+					if parameter.default is not Parameter.empty:
+						self._methods[tuple(types)] = method
+					types.append(parameter.annotation)
+
+				self._methods[tuple(types)] = method
+
+			def __call__(self, *args):
+				"""Call a method based on type signature of the arguments."""
+
+				types = tuple(type(arg) for arg in args[1:])
+				meth = self._methods.get(types, None)
+				if meth:
+					return meth(*args)
+				else:
+					raise TypeError("No matching method for types {}.".format(types))
+
+			def __get__(self, instance, cls):
+				"""Descriptor method needed to make calls work in a class."""
+
+				if instance is not None:
+					return MethodType(self, instance)
+				else:
+					return self
+
+		def __setitem__(self, key, value):
+			if key in self:
+				# If key already exists, it must be a dispatchable method or callable
+				currentValue = self[key]
+				if isinstance(currentValue, self.DispatchableMethod):
+					currentValue.register(value)
+				else:
+					dispatchable = self.DispatchableMethod(key)
+					dispatchable.register(currentValue)
+					dispatchable.register(value)
+					super().__setitem__(key, dispatchable)
+			else:
+				super().__setitem__(key, value)
+
+	def __new__(cls, className, bases, classDict):
+		return type.__new__(cls, className, bases, dict(classDict))
+
+	@classmethod
+	def __prepare__(cls, classname, bases):
+		return cls.DispatchDictionary()
