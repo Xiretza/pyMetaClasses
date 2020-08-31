@@ -83,7 +83,7 @@ setuptools.setup(
 		"Intended Audience :: Developers",
 		"Topic :: Utilities"
 	],
-	keywords="Python3 Path Generic-Library",
+	keywords="Python3 MetaClass Collection",
 
 	python_requires='>=3.4',
 	install_requires=requirements,

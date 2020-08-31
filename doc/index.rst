@@ -32,6 +32,7 @@ List of meta classes
 ********************
 
 * :py:class:`pyMetaClasses.Singleton`
+* :py:class:`pyMetaClasses.Overloading`
 
 
 Contributors

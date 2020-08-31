@@ -17,6 +17,15 @@
 
 A collection of MetaClasses for Python.
 
+## Metaclasses
+* **Singleton**  
+  Allow only a single instance of a class.  
+  &rArr; See documentation of [pyMetaClasses.Singleton](https://pymetaclasses.readthedocs.io/en/latest/Singleton.html)
+* **Overloading**
+  Allow method overloading in Python classes. Dispatch method calls based on
+  method signatures (type annotations).  
+  &rArr; See documentation of [pyMetaClasses.Overloading](https://pymetaclasses.readthedocs.io/en/latest/Overloading.html)
+
 
 ## Contributors
 
