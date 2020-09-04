@@ -13,7 +13,6 @@ script:
   - echo "Upload coverage results to CodeCov..." && codecov
   - echo "Python Unit Tests\n================================================================================"
   - python -m unittest tests.unit.Singleton
-  - python3 ./tests/Application.py
 
 deploy:
   provider: pypi
