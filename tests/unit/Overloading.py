@@ -11,7 +11,7 @@
 # =============================================================================
 # Authors:            Patrick Lehmann
 #
-# Python unittest:    Testing the Singleton meta class
+# Python unittest:    Testing the Overloading meta class
 #
 # Description:
 # ------------------------------------
@@ -46,7 +46,7 @@ pyAttributes
 """
 from unittest       import TestCase
 
-from pyMetaClasses  import Singleton
+from pyMetaClasses  import Overloading
 
 
 if __name__ == "__main__":
@@ -55,56 +55,18 @@ if __name__ == "__main__":
 	exit(1)
 
 
-class Application1(metaclass=Singleton):
-	X = 0
+class Application(metaclass=Overloading):
+	def __init__(self, x : int):
+		self.x = x
 
-	def __init__(self):
-		print("Instance created")
-
-		self.X = 1
-
-
-class Application2(metaclass=Singleton, includeDerivedVariants=True):
-	X = 0
-
-	def __init__(self, x=5):
-		print("setting X")
-
-		self.X = x
+	def __init__(self, x : str):
+		self.x = x
 
 
-class Application3(Application2):
+class Overloading(TestCase):
+	def test_OverloadingByTypeSignature(self):
+		app1 = Application(1)
+		self.assertEqual(app1.x, 1)
 
-	def __init__(self, x):
-		super().__init__(x)
-		print("Instance created")
-
-
-class Singleton(TestCase):
-	def test_1(self):
-		self.assertEqual(Application1.X, 0)
-
-		app = Application1()
-		self.assertEqual(app.X, 1)
-
-		app.X = 2
-		self.assertEqual(app.X, 2)
-
-		app2 = Application1()
-		self.assertEqual(app2.X, 2)
-
-		self.assertEqual(Application1.X, 0)
-
-	def test_2(self):
-		self.assertEqual(Application3.X, 0)
-
-		app = Application3(1)
-		self.assertEqual(app.X, 1)
-
-		app.X = 2
-		self.assertEqual(app.X, 2)
-
-		app2 = Application3(3)
-		self.assertEqual(app2.X, 2)
-
-		self.assertEqual(Application3.X, 0)
+		app2 = Application("2")
+		self.assertEqual(app2.x, "2")
