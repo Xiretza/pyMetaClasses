@@ -44,9 +44,9 @@ pyAttributes
 :copyright: Copyright 2007-2020 Patrick Lehmann - Bötzingen, Germany
 :license: Apache License, Version 2.0
 """
-from unittest     import TestCase
+from unittest       import TestCase
 
-from pyCallBy     import CallByRefParam, CallByRefBoolParam, CallByRefIntParam
+from pyMetaClasses  import Singleton
 
 
 if __name__ == "__main__":
@@ -54,166 +54,27 @@ if __name__ == "__main__":
 	print("Use: 'python -m unitest <testcase module>'")
 	exit(1)
 
-def func1(param : CallByRefParam):
-	param <<= (3, 4)
 
-def func2(param : CallByRefBoolParam, value : bool = True):
-	param <<= value
+class Application(metaclass=Singleton):
+	X = 0
 
-def assign_42(param : CallByRefIntParam, value : int = 42):
-	param <<= value
+	def __init__(self):
+		print("Instance created")
 
-class CallByReference_AnyParam(TestCase):
-	ref : CallByRefParam = CallByRefParam()
-
-	def setUp(self) -> None:
-		func1(self.ref)
-
-	def test_Value(self):
-		self.assertTupleEqual(self.ref.value, (3, 4))
-
-	def test_Equal(self):
-		self.assertTrue(self.ref == (3, 4))
-
-	def test_Unequal(self):
-		self.assertTrue(self.ref != (4, 3))
+		self.X = 1
 
 
-class CallByReference_BoolParam(TestCase):
-	ref : CallByRefBoolParam = CallByRefBoolParam()
+class Singleton(TestCase):
+	def test_App(self):
+		self.assertEqual(Application.X, 0)
 
-	def setUp(self) -> None:
-		func2(self.ref)
+		app = Application()
+		self.assertEqual(app.X, 1)
 
-	def test_Value(self):
-		self.assertTrue(self.ref.value)
+		app.X = 2
+		self.assertEqual(app.X, 2)
 
-	def test_Equal(self):
-		self.assertTrue(self.ref == True)
+		app2 = Application()
+		self.assertEqual(app2.X, 2)
 
-	def test_Unequal(self):
-		self.assertTrue(self.ref != False)
-
-
-	def test_TypeConvertToBool(self):
-		self.assertTrue(bool(self.ref))
-
-	def test_TypeConvertToInt(self):
-		self.assertEqual(int(self.ref), 1)
-
-
-class CallByReference_IntParam(TestCase):
-	ref : CallByRefIntParam = CallByRefIntParam()
-
-	def test_Value(self):
-		assign_42(self.ref)
-		self.assertEqual(self.ref.value, 42)
-
-	def test_Negate(self):
-		assign_42(self.ref)
-		self.assertEqual(-self.ref, -42)
-
-	def test_Positive(self):
-		assign_42(self.ref, -42)
-		self.assertEqual(+self.ref, -42)
-
-	def test_Invert(self):
-		assign_42(self.ref, 1)
-		self.assertEqual(~self.ref, -2)
-
-
-	def test_GeaterThanOrEqual(self):
-		assign_42(self.ref)
-		self.assertTrue(self.ref >= 40)
-
-	def test_GreaterThan(self):
-		assign_42(self.ref)
-		self.assertTrue(self.ref >  41)
-
-	def test_Equal(self):
-		assign_42(self.ref)
-		self.assertTrue(self.ref == 42)
-
-	def test_Unequal(self):
-		assign_42(self.ref)
-		self.assertTrue(self.ref != 43)
-
-	def test_LessThan(self):
-		assign_42(self.ref)
-		self.assertTrue(self.ref <  44)
-
-	def test_LessThanOrEqual(self):
-		assign_42(self.ref)
-		self.assertTrue(self.ref <= 45)
-
-
-	def test_Addition(self):
-		assign_42(self.ref)
-		self.assertEqual(self.ref + 1, 43)
-
-	def test_Subtraction(self):
-		assign_42(self.ref)
-		self.assertEqual(self.ref - 1, 41)
-
-	def test_Multiplication(self):
-		assign_42(self.ref)
-		self.assertEqual(self.ref * 1, 42)
-
-	def test_Power(self):
-		assign_42(self.ref)
-		self.assertEqual(self.ref ** 1, 42)
-
-	def test_Division(self):
-		assign_42(self.ref)
-		self.assertEqual(self.ref / 1, 42)
-
-	def test_FloorDivision(self):
-		assign_42(self.ref)
-		self.assertEqual(self.ref // 1, 42)
-
-	def test_Modulo(self):
-		assign_42(self.ref)
-		self.assertEqual(self.ref % 2, 0)
-
-
-	def test_Increment(self):
-		assign_42(self.ref)
-		self.ref += 1
-		self.assertEqual(self.ref, 43)
-
-	def test_Decrement(self):
-		assign_42(self.ref)
-		self.ref -= 1
-		self.assertEqual(self.ref, 41)
-
-	def test_InplaceMultiplication(self):
-		assign_42(self.ref)
-		self.ref *= 1
-		self.assertEqual(self.ref, 42)
-
-	def test_InplacePower(self):
-		assign_42(self.ref)
-		self.ref **= 1
-		self.assertEqual(self.ref, 42)
-
-	def test_InplaceDivision(self):
-		assign_42(self.ref)
-		self.ref /= 1
-		self.assertEqual(self.ref, 42)
-
-	def test_InplaceFloorDivision(self):
-		assign_42(self.ref)
-		self.ref //= 1
-		self.assertEqual(self.ref, 42)
-
-	def test_InplaceModulo(self):
-		assign_42(self.ref)
-		self.ref %= 2
-		self.assertEqual(self.ref, 0)
-
-
-	def test_TypeConvertToBool(self):
-		self.assertTrue(bool(self.ref))
-
-	def test_TypeConvertToInt(self):
-		self.assertEqual(int(self.ref), 42)
+		self.assertEqual(Application.X, 0)
