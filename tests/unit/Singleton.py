@@ -64,22 +64,6 @@ class Application1(metaclass=Singleton):
 		self.X = 1
 
 
-class Application2(metaclass=Singleton, includeDerivedVariants=True):
-	X = 0
-
-	def __init__(self, x=5):
-		print("setting X")
-
-		self.X = x
-
-
-class Application3(Application2):
-
-	def __init__(self, x):
-		super().__init__(x)
-		print("Instance created")
-
-
 class Singleton(TestCase):
 	def test_1(self):
 		self.assertEqual(Application1.X, 0)
@@ -94,17 +78,3 @@ class Singleton(TestCase):
 		self.assertEqual(app2.X, 2)
 
 		self.assertEqual(Application1.X, 0)
-
-	def test_2(self):
-		self.assertEqual(Application3.X, 0)
-
-		app = Application3(1)
-		self.assertEqual(app.X, 1)
-
-		app.X = 2
-		self.assertEqual(app.X, 2)
-
-		app2 = Application3(3)
-		self.assertEqual(app2.X, 2)
-
-		self.assertEqual(Application3.X, 0)
